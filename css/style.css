@@ -1,0 +1,405 @@
+/* Estilos personalizados para la Simulación Ferroviaria */
+
+/* Variables CSS personalizadas */
+:root {
+    --primary-color: #007bff;
+    --success-color: #28a745;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+    --info-color: #17a2b8;
+    --secondary-color: #6c757d;
+    --dark-color: #343a40;
+    --light-color: #f8f9fa;
+    --train-size: 60px;
+    --section-height: 120px;
+    --border-radius: 8px;
+    --transition-speed: 0.3s;
+}
+
+/* Sistema ferroviario */
+.railway-system {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px 0;
+}
+
+.railway-section {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 2px solid #e9ecef;
+    transition: all var(--transition-speed) ease;
+    min-height: var(--section-height);
+}
+
+.railway-section:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.section-header h6 {
+    margin: 0;
+    font-weight: 600;
+    color: var(--dark-color);
+}
+
+/* Contenedores de trenes */
+.train-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    min-height: 80px;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: var(--border-radius);
+    border: 1px dashed #dee2e6;
+}
+
+/* Tren individual */
+.train {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--train-size);
+    height: var(--train-size);
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+    color: white;
+    border-radius: 50%;
+    font-weight: bold;
+    font-size: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: all var(--transition-speed) ease;
+    position: relative;
+    animation: trainPulse 2s infinite;
+}
+
+.train:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.train::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, #ff6b6b, #ee5a24, #ff6b6b);
+    border-radius: 50%;
+    z-index: -1;
+    animation: trainGlow 2s infinite;
+}
+
+/* Estados de los trenes */
+.train.entry {
+    background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+}
+
+.train.single-track {
+    background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%);
+    animation: trainWarning 1s infinite;
+}
+
+.train.double-track-a {
+    background: linear-gradient(135deg, #00b894 0%, #00a085 100%);
+}
+
+.train.double-track-b {
+    background: linear-gradient(135deg, #6c5ce7 0%, #5f3dc4 100%);
+}
+
+.train.exit {
+    background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
+}
+
+/* Indicador de vía única */
+.single-track-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px;
+    background: rgba(255, 193, 7, 0.1);
+    border: 2px dashed var(--warning-color);
+    border-radius: var(--border-radius);
+    color: var(--warning-color);
+    font-weight: 600;
+    font-size: 14px;
+}
+
+/* Carriles de vía doble */
+.track-lane {
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: var(--border-radius);
+    border: 1px solid #dee2e6;
+}
+
+.track-lane h6 {
+    margin-bottom: 10px;
+    text-align: center;
+    color: var(--dark-color);
+    font-weight: 600;
+}
+
+/* Log de eventos */
+.event-log {
+    max-height: 300px;
+    overflow-y: auto;
+    background: #f8f9fa;
+    border-radius: var(--border-radius);
+    padding: 15px;
+    border: 1px solid #dee2e6;
+}
+
+.event-item {
+    padding: 8px 12px;
+    margin-bottom: 8px;
+    border-radius: var(--border-radius);
+    border-left: 4px solid var(--primary-color);
+    background: white;
+    font-size: 14px;
+    animation: slideIn 0.3s ease;
+}
+
+.event-item.success {
+    border-left-color: var(--success-color);
+    background: rgba(40, 167, 69, 0.1);
+}
+
+.event-item.warning {
+    border-left-color: var(--warning-color);
+    background: rgba(255, 193, 7, 0.1);
+}
+
+.event-item.info {
+    border-left-color: var(--info-color);
+    background: rgba(23, 162, 184, 0.1);
+}
+
+.event-item.danger {
+    border-left-color: var(--danger-color);
+    background: rgba(220, 53, 69, 0.1);
+}
+
+/* Resultados */
+.result-item {
+    text-align: center;
+    padding: 15px;
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform var(--transition-speed) ease;
+}
+
+.result-item:hover {
+    transform: translateY(-2px);
+}
+
+.result-item h6 {
+    color: var(--secondary-color);
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+/* Animaciones */
+@keyframes trainPulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+@keyframes trainGlow {
+    0%, 100% {
+        opacity: 0.5;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+@keyframes trainWarning {
+    0%, 100% {
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+    50% {
+        box-shadow: 0 0 10px rgba(255, 193, 7, 0.6);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .railway-system {
+        gap: 15px;
+    }
+    
+    .railway-section {
+        padding: 10px;
+        min-height: 100px;
+    }
+    
+    .train {
+        width: 50px;
+        height: 50px;
+        font-size: 10px;
+    }
+    
+    .train-container {
+        min-height: 60px;
+        padding: 8px;
+    }
+    
+    .section-header {
+        flex-direction: column;
+        gap: 5px;
+        text-align: center;
+    }
+    
+    .single-track-indicator {
+        font-size: 12px;
+        padding: 8px;
+    }
+}
+
+@media (max-width: 576px) {
+    .train {
+        width: 40px;
+        height: 40px;
+        font-size: 8px;
+    }
+    
+    .railway-section {
+        min-height: 80px;
+    }
+    
+    .train-container {
+        min-height: 50px;
+        gap: 5px;
+    }
+}
+
+/* Estados de simulación */
+.simulation-running .btn-success {
+    background-color: var(--danger-color);
+    border-color: var(--danger-color);
+}
+
+.simulation-running .btn-success:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+}
+
+/* Barra de progreso personalizada */
+.progress {
+    height: 25px;
+    border-radius: 15px;
+    background-color: #e9ecef;
+    overflow: hidden;
+}
+
+.progress-bar {
+    transition: width 0.5s ease;
+    border-radius: 15px;
+}
+
+/* Efectos de hover para cards */
+.card {
+    transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Estilos para botones */
+.btn {
+    border-radius: 25px;
+    font-weight: 600;
+    transition: all var(--transition-speed) ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilos para grupo de botones */
+.btn-group {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 25px;
+    overflow: hidden;
+}
+
+.btn-group .btn {
+    border-radius: 0;
+    margin: 0;
+}
+
+.btn-group .btn:first-child {
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+}
+
+.btn-group .btn:last-child {
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+}
+
+.btn-group .btn:not(:last-child) {
+    border-right: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Badges personalizados */
+.badge {
+    font-size: 0.8em;
+    padding: 0.5em 0.8em;
+    border-radius: 15px;
+    font-weight: 600;
+}
+
+/* Scrollbar personalizada */
+.event-log::-webkit-scrollbar {
+    width: 8px;
+}
+
+.event-log::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.event-log::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+.event-log::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+} 

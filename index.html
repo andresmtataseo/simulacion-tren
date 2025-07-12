@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulación Ferroviaria</title>
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-light">
+    <div class="container">
+        <!-- Header -->
+
+        <header>
+            <nav class="navbar navbar-expand-lg" data-bs-theme="light">
+                <div class="container-fluid">
+    
+                    <div class="navbar-brand text-center">
+                        <p class="mb-0">
+                            <i class="fas fa-train me-3"></i>
+                            Simulación Ferroviaria
+                        </p>
+                    </div>
+
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="index.html">Inicio</a>
+                        </li>
+                    </ul>
+    
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="nosotros.html">Nosotros</a>
+                        </li>
+                    </ul>
+    
+                </div>
+            </nav>
+        </header>
+
+        <!-- Panel de Control -->
+        <div class="container mb-4">
+            <!-- Botones de Control -->
+            <div class="row mb-4">
+                <div class="col-12 text-center">
+                    <div class="btn-group" role="group">
+                        <button id="startSimulation" class="btn btn-success btn-lg">
+                            <i class="fas fa-play me-2"></i>
+                            Iniciar Simulación
+                        </button>
+                        <button id="fastForward" class="btn btn-warning btn-lg" disabled>
+                            <i class="fas fa-forward me-2"></i>
+                            Avance Rápido
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header bg-info text-white">
+                            <h5 class="mb-0">
+                                <i class="fas fa-cogs me-2"></i>
+                                Estado de la Simulación
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="text-center">
+                                        <h4 id="completedTrains" class="text-success">0</h4>
+                                        <small class="text-muted">Trenes Completados</small>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="text-center">
+                                        <h4 id="totalTrains" class="text-primary">1000</h4>
+                                        <small class="text-muted">Total de Trenes</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="progress mt-3">
+                                <div id="progressBar" class="progress-bar bg-success" role="progressbar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header bg-warning text-dark">
+                            <h5 class="mb-0">
+                                <i class="fas fa-chart-line me-2"></i>
+                                Métricas de Cola
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="text-center">
+                                        <h4 id="currentQueue" class="text-warning">0</h4>
+                                        <small class="text-muted">Cola Actual</small>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="text-center">
+                                        <h4 id="maxQueue" class="text-danger">0</h4>
+                                        <small class="text-muted">Cola Máxima</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Visualización del Sistema Ferroviario -->
+        <div class="container mb-4">
+            <div class="card">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-route me-2"></i>
+                        Sistema Ferroviario
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="railway-system">
+                        <!-- Sección de Entrada -->
+                        <div class="railway-section entry-section">
+                            <div class="section-header">
+                                <h6>Entrada de Trenes</h6>
+                                <span id="entryCount" class="badge bg-secondary">0</span>
+                            </div>
+                            <div id="entryTrains" class="train-container"></div>
+                        </div>
+
+                        <!-- Sección de Vía Única -->
+                        <div class="railway-section single-track">
+                            <div class="section-header">
+                                <h6>Vía Única</h6>
+                                <span id="singleTrackCount" class="badge bg-warning">0</span>
+                            </div>
+                            <div id="singleTrackTrains" class="train-container">
+                                <div class="single-track-indicator">
+                                    <i class="fas fa-exclamation-triangle text-warning"></i>
+                                    Solo un tren a la vez
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sección de Vía Doble -->
+                        <div class="railway-section double-track">
+                            <div class="section-header">
+                                <h6>Vía Doble</h6>
+                                <span id="doubleTrackCount" class="badge bg-info">0</span>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="track-lane">
+                                        <h6 class="text-center">Carril A</h6>
+                                        <div id="doubleTrackA" class="train-container"></div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="track-lane">
+                                        <h6 class="text-center">Carril B</h6>
+                                        <div id="doubleTrackB" class="train-container"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sección de Salida -->
+                        <div class="railway-section exit-section">
+                            <div class="section-header">
+                                <h6>Salida de Trenes</h6>
+                                <span id="exitCount" class="badge bg-success">0</span>
+                            </div>
+                            <div id="exitTrains" class="train-container"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Panel de Resultados -->
+        <div class="container mb-4">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-chart-bar me-2"></i>
+                        Resultados de la Simulación
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div id="results" class="row">
+                        <div class="col-md-4">
+                            <div class="result-item">
+                                <h6>Cola Máxima</h6>
+                                <p id="maxQueueResult" class="h4 text-danger">-</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="result-item">
+                                <h6>Cola Promedio</h6>
+                                <p id="avgQueueResult" class="h4 text-warning">-</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="result-item">
+                                <h6>Tiempo Total</h6>
+                                <p id="totalTimeResult" class="h4 text-info">-</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Log de Eventos -->
+        <div class="container mb-4">
+            <div class="card">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-list me-2"></i>
+                        Log de Eventos
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div id="eventLog" class="event-log">
+                        <p class="text-muted">Los eventos de la simulación aparecerán aquí...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <footer class="mt-5">
+        <div class="container">
+            <div class="text-center">
+                <p class="text-muted mb-0">
+                    <i class="fas fa-copyright me-1"></i>
+                    2025 SAM Company, Inc
+                </p>
+            </div>
+        </div>
+    </footer>
+    <!-- Bootstrap JS -->
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <!-- Script principal -->
+    <script src="js/script.js"></script>
+</body>
+</html> 
